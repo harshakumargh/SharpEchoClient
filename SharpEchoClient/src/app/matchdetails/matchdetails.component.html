@@ -1,1 +1,39 @@
-<p>matchdetails works!</p>
+<div class="container mt-5">
+  <div class="row custom-wrapper">
+    <h2 class="mb-3 text-center">Save Match Details</h2>
+
+    <div class="d-grid">
+        <select id="team1Select" class="custom-select mb-3"
+          (change)="changeTeam1($event.target)">
+          <option value="0">Choose Team</option>
+          <option *ngFor="let team of teams" [value]="team.id">
+            {{ team.name }}
+          </option>
+        </select>
+
+        <select id="team2Select" class="custom-select mb-3"
+          (change)="changeTeam2($event.target)">
+          <option value="0">Choose Team</option>
+          <option *ngFor="let team of teams" [value]="team.id">
+            {{ team.name }}
+          </option>
+        </select>
+
+        <select id="winnerSelect" class="custom-select mb-3"
+        (change)="winner($event.target)">
+        <option value="0">Winner</option>
+        <option *ngFor="let team of teams" [value]="team.id">
+          {{ team.name }}
+        </option>
+      </select>
+
+      <input class="custom-select mb-3" type="date" value="{{matchDetails.date}}" (change)="selectDate($event.target)" min="2000-01-01" max="2030-12-31"/>
+
+        <button type="button" (click)="saveMatchDetails()" class="btn btn-danger btn-lg btn-block">
+          Save
+        </button>
+
+      </div>
+
+  </div>
+</div>

@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError, map} from 'rxjs/operators';
-import { MatchUps } from 'src/models/matchup';
-import { Team } from 'src/models/team';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
+import { MatchDetails, MatchUps } from 'src/models/matchup';
 @Injectable({
   providedIn: 'root'
 })
@@ -21,8 +19,8 @@ export class MatchserviceService {
     .pipe(retry(1),catchError(this.handleError));
   }
 
-  addMatch(){
-   return this.http.get(this.BaseURL)
+  addMatch(matchDetails: MatchDetails):Observable<any>{
+   return this.http.post(this.BaseURL + 'RecordMatch',matchDetails)
    .pipe(retry(1),catchError(this.handleError));
   }
 

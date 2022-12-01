@@ -4,9 +4,9 @@ import { MatchdetailsComponent } from './matchdetails/matchdetails.component';
 import { MatchupsComponent } from './matchups/matchups.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'matchdetails', pathMatch: 'full' },
   { path:'matchdetails', component:MatchdetailsComponent},
-  { path:'matchups', component:MatchupsComponent}
-
+  { path:'matchups', component:MatchupsComponent},
 ];
 
 @NgModule({

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatchserviceService } from '../matchservice.service';
-import { observable } from 'rxjs';
 import { MatchUps } from 'src/models/matchup';
-import { FormBuilder, Validators } from '@angular/forms';
 import { Team } from 'src/models/team';
+
 @Component({
   selector: 'app-matchups',
   templateUrl: './matchups.component.html',
@@ -11,19 +10,16 @@ import { Team } from 'src/models/team';
 })
 export class MatchupsComponent implements OnInit {
 
-  constructor(private service: MatchserviceService, public fb: FormBuilder) { }
+  constructor(private service: MatchserviceService) { }
 
   errorMessage: string = "";
 
   matchups: MatchUps = {team1:0,team2:0};
-
   teams: Team[]=[];
-
   team1 :string= "";
   team2 :string ="";
   team1Wins : number = 0;
   team2Wins :number = 0;
-
   isSubmit:boolean=false;
 
 
@@ -65,6 +61,13 @@ export class MatchupsComponent implements OnInit {
     )
   }
 
+  validateMatchUpRequest():boolean{
+    if(this.matchups.team1 == this.matchups.team2){
+      return false;
+    }
+    return true;
+  }
+
   getMatchUps(){
     if(this.validateMatchUpRequest()){
       this.isSubmit=true;
@@ -80,18 +83,5 @@ export class MatchupsComponent implements OnInit {
     else{
       alert("Same team selected in both dropdowns.")
     }
-  }
-
-  validateMatchUpRequest():boolean{
-    if(this.matchups.team1 == this.matchups.team2){
-      return false;
-    }
-    return true;
-  }
-  clear(){
-    this.team1= "";
-    this.team2= "";
-    this.team1Wins=0;
-    this.team2Wins=0;
   }
 }
