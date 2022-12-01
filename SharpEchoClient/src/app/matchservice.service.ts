@@ -20,7 +20,7 @@ export class MatchserviceService {
   }
 
   addMatch(matchDetails: MatchDetails):Observable<any>{
-   return this.http.post(this.BaseURL + 'RecordMatch',matchDetails)
+   return this.http.post(this.BaseURL + 'AddMatch',matchDetails)
    .pipe(retry(1),catchError(this.handleError));
   }
 
