@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatchserviceService } from '../matchservice.service';
 import { observable } from 'rxjs';
 import { MatchUps } from 'src/models/matchup';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Team } from 'src/models/team';
 @Component({
   selector: 'app-matchups',
   templateUrl: './matchups.component.html',
@@ -9,21 +11,87 @@ import { MatchUps } from 'src/models/matchup';
 })
 export class MatchupsComponent implements OnInit {
 
-  constructor(private service: MatchserviceService) { }
+  constructor(private service: MatchserviceService, public fb: FormBuilder) { }
+
+  errorMessage: string = "";
+
+  matchups: MatchUps = {team1:0,team2:0};
+
+  teams: Team[]=[];
+
+  team1 :string= "";
+  team2 :string ="";
+  team1Wins : number = 0;
+  team2Wins :number = 0;
+
+  isSubmit:boolean=false;
+
 
   ngOnInit(): void {
-    this.getMatchUps();
+    this.getTeams();
+  }
+
+  changeTeam1(input: any) {
+    let value = parseInt(input.value);
+    if(value==0){
+      alert("Select team to continue.")
+    }
+    else if( value!=0 && this.matchups.team2 == value){
+      alert("Same team already selected in other dropdown, select other team.")
+    }
+    else{
+      this.matchups.team1 = value;
+    }
+  }
+
+  changeTeam2(input: any) {
+    let value = parseInt(input.value);
+    if(value==0){
+      alert("Select team to continue.")
+    }
+    else if( value!=0 && this.matchups.team1 == value){
+      alert("Same team already selected in other dropdown, select other team.")
+    }
+    else{
+      this.matchups.team2 = value;
+    }
+  }
+
+  getTeams(){
+    this.service.getTeams().subscribe(
+      data => {
+        this.teams = data;
+      }
+    )
   }
 
   getMatchUps(){
-    let team1: number = 1;
-    let team2: number = 2;
-    var matchups : MatchUps= {team1 :team1, team2 : team2}
+    if(this.validateMatchUpRequest()){
+      this.isSubmit=true;
+      this.team1 = this.teams.filter(x=>x.id==this.matchups.team1)[0].name;
+      this.team2 = this.teams.filter(x=>x.id==this.matchups.team2)[0].name;
+        this.service.getMatchUps(this.matchups).subscribe(
+          (data:MatchUps) => {
+            this.team1Wins= data.team1;
+            this.team2Wins =data.team2;
+          }
+        )
+    }
+    else{
+      alert("Same team selected in both dropdowns.")
+    }
+  }
 
-    this.service.getMatchUps(matchups).subscribe(
-      data => {
-        console.log(data);
-      }
-    )
+  validateMatchUpRequest():boolean{
+    if(this.matchups.team1 == this.matchups.team2){
+      return false;
+    }
+    return true;
+  }
+  clear(){
+    this.team1= "";
+    this.team2= "";
+    this.team1Wins=0;
+    this.team2Wins=0;
   }
 }

@@ -1,23 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError, map} from 'rxjs/operators';
 import { MatchUps } from 'src/models/matchup';
+import { Team } from 'src/models/team';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 @Injectable({
   providedIn: 'root'
 })
 export class MatchserviceService {
 
+  //BaseURL: string = "https://sharpechoapi.azurewebsites.net/api/Teams/"
+  BaseURL: string = "https://localhost:5001/api/Teams/"
   constructor(private http: HttpClient) {
+
   }
 
-  getMatchUps(data:MatchUps){
-    return this.http.get('https://sharpechoapi.azurewebsites.net/api/Teams/GetMatchUps?team1='+ data.team1 +'&team2='+ data.team2)
+  getMatchUps(data:MatchUps):Observable<any>{
+    return this.http.get(this.BaseURL + 'GetMatchUps?team1='+ data.team1 +'&team2='+ data.team2)
     .pipe(retry(1),catchError(this.handleError));
   }
 
   addMatch(){
-   // return this.http.post
+   return this.http.get(this.BaseURL)
+   .pipe(retry(1),catchError(this.handleError));
+  }
+
+  getTeams():Observable<any>{
+    return this.http.get(this.BaseURL)
+    .pipe(retry(1),catchError(this.handleError));
   }
 
     // Error handling
