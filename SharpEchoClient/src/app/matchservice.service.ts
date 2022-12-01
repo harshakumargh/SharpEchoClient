@@ -8,8 +8,8 @@ import { MatchDetails, MatchUps } from 'src/models/matchup';
 })
 export class MatchserviceService {
 
-  //BaseURL: string = "https://sharpechoapi.azurewebsites.net/api/Teams/"
-  BaseURL: string = "https://localhost:5001/api/Teams/"
+  BaseURL: string = "https://sharpechoapi.azurewebsites.net/api/Teams/"
+  //BaseURL: string = "https://localhost:5001/api/Teams/"
   constructor(private http: HttpClient) {
 
   }
