@@ -84,7 +84,6 @@ export class MatchdetailsComponent implements OnInit {
         (data:MatchDetails) => {
           if(data.id > 0){
             alert("Successfully added.");
-            window.location.reload();
           }
         }
       )
